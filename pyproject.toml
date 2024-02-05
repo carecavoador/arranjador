@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "arranjador"
+version = "0.1.0"
+description = ""
+authors = ["Careca Voador <e.rodrigo@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.13"
+pyside6 = "^6.6.1"
+rectpack = "^0.2.2"
+icecream = "^2.1.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
