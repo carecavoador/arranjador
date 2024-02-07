@@ -1,6 +1,8 @@
 import sys
 
 from rectpack import newPacker
+from rectpack.geometry import Rectangle
+
 from icecream import ic
 
 
@@ -42,9 +44,9 @@ def main() -> None:
     app = QApplication(sys.argv)
 
     bin_width = 914
-    bin_height = 500
+    bin_height = 1700
 
-    rectangles = [(210, 297) for _ in range(7)]
+    rectangles = [(210, 297) for _ in range(10)]
     
     packer = newPacker(rotation=True)
 
@@ -57,23 +59,25 @@ def main() -> None:
     windows = []
 
     for index, b in enumerate(packer.bin_list()):
-        w, h = b
-        viewer = RectsViewer(w, h)
-        for r in packer[index]:
+        def sums_w(rect: Rectangle) -> int:
+            return rect.x + rect.width
+
+        def sums_h(rect: Rectangle) -> int:
+            return rect.y + rect.height
+
+        viewer = RectsViewer(*b)
+        rects = packer[index]
+        for r in rects:
             viewer.draw_rectangle(r.x, r.y, r.width, r.height)
+
+        max_w = max(list(map(sums_w, [r for r in rects])))
+        max_h = max(list(map(sums_h, [r for r in rects])))
+        viewer.draw_rectangle(0, 0, max_w, max_h, color=Qt.blue)
+
         windows.append(viewer)
     
     for w in windows:
         w.show()
-
-    # for i, rectangle in enumerate(rectangles):
-    #     width, height = rectangle
-    #     viewer.draw_rectangle(
-    #         x=i*width,
-    #         y=0,
-    #         width=width,
-    #         height=height
-    #     )
 
     sys.exit(app.exec())
 
